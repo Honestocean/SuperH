@@ -1,5 +1,10 @@
 .App {
   text-align: center;
+  
+}
+
+body {
+  background-image: url('media/craig-mclachlan-8B_DYG7Iaa4-unsplash.jpg');
 }
 
 .App-logo {
@@ -35,4 +40,20 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.Fight {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.Hero {
+  margin-left: 10px;
+  border: black;
+  background-color: white;
+}
+
+img {
+  height: 40%;
 }

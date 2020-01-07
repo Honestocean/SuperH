@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import Hero1 from "./Hero1";
 import Hero2 from "./Hero2";
+import Result from "./Result"
 
-export default class HeroCard extends Component {
+export default class Fight extends Component {
   state = {
     super1: {
       response: "success",
@@ -93,13 +94,24 @@ export default class HeroCard extends Component {
   };
 
   componentDidMount() {
-    fetch("https://www.superheroapi.com/api.php/2536687333108055/2")
+    let id1 = Math.floor(Math.random() * 700);
+    let id2 = Math.floor(Math.random() * 700);
+    console.log(id1, id2);
+
+    fetch(`https://www.superheroapi.com/api.php/2536687333108055/${id1}`)
       .then(response => {
         return response.json();
       })
       .then(response => {
-        this.setState({ super1: response, super2: response });
-      });
+        this.setState({ ...this.state, super1: response });
+      })
+      .then(fetch(`https://www.superheroapi.com/api.php/2536687333108055/${id2}`)
+        .then(response => {
+          return response.json();
+        })
+        .then(response => {
+          this.setState({ ...this.state, super2: response })
+        }));
   }
 
   nextSuperHero = num => {
@@ -168,18 +180,26 @@ export default class HeroCard extends Component {
 
   render() {
     return (
-      <section>
-        <Hero1
-          prevSuperHero={this.prevSuperHero}
-          nextSuperHero={this.nextSuperHero}
-          super={this.state.super1}
+      <div>
+        <Result
+          powerstats2={this.state.super2.powerstats}
+          powerstats1={this.state.super1.powerstats}
+          name1={this.state.super1.name}
+          name2={this.state.super2.name}
         />
-        <Hero2
-          prevSuperHero={this.prevSuperHero}
-          nextSuperHero={this.nextSuperHero}
-          super={this.state.super2}
-        />
-      </section>
+        <section className="Fight">
+          <Hero1
+            prevSuperHero={this.prevSuperHero}
+            nextSuperHero={this.nextSuperHero}
+            super={this.state.super1}
+          />
+          <Hero2
+            prevSuperHero={this.prevSuperHero}
+            nextSuperHero={this.nextSuperHero}
+            super={this.state.super2}
+          />
+        </section>
+      </div>
     );
   }
 }

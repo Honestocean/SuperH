@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Hero1(props) {
   return (
-    <div>
+    <div className="Hero">
       <h2>{props.super.name}</h2>
       <img alt="A Bomb" src={props.super.image.url}></img>
       <h3>{props.super.work.occupation}</h3>
