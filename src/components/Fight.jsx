@@ -90,13 +90,14 @@ export default class Fight extends Component {
       image: {
         url: "https://www.superherodb.com/pictures2/portraits/10/100/10060.jpg"
       }
-    }
+    },
+    turn: true,
+    chosenStat: null
   };
 
   componentDidMount() {
     let id1 = Math.floor(Math.random() * 700);
     let id2 = Math.floor(Math.random() * 700);
-    console.log(id1, id2);
 
     fetch(`https://www.superheroapi.com/api.php/2536687333108055/${id1}`)
       .then(response => {
@@ -156,9 +157,9 @@ export default class Fight extends Component {
         })
         .then(response => {
           if (num === 1) {
-            this.setState({ super1: response, ...this.state.super2 });
+            this.setState({ super1: response, ...this.state });
           } else {
-            this.setState({ super2: response, ...this.state.super1 });
+            this.setState({ super2: response, ...this.state });
           }
         });
     } else {
@@ -183,7 +184,6 @@ export default class Fight extends Component {
   refreshNewHero = () => {
     let id1 = Math.floor(Math.random() * 700);
     let id2 = Math.floor(Math.random() * 700);
-    console.log(id1, id2);
 
     fetch(`https://www.superheroapi.com/api.php/2536687333108055/${id1}`)
       .then(response => {
@@ -198,12 +198,18 @@ export default class Fight extends Component {
             return response.json();
           })
           .then(response => {
-            this.setState({ ...this.state, super2: response });
+            this.setState({ ...this.state, super2: response, turn: !this.state.turn });
           })
       );
   };
 
+  statChooser = (stat) => {
+    console.log(stat.target.value);
+    this.setState({ ...this.state, chosenStat: stat.target.value })
+  };
+
   render() {
+    console.log('super1', this.state.super1.powerstats, 'super2', this.state.super2.powerstats)
     return (
       <div>
         <Result
@@ -212,17 +218,22 @@ export default class Fight extends Component {
           powerstats1={this.state.super1.powerstats}
           name1={this.state.super1.name}
           name2={this.state.super2.name}
+          chosenStat={this.state.chosenStat}
         />
         <section className="Fight">
           <Hero1
             prevSuperHero={this.prevSuperHero}
             nextSuperHero={this.nextSuperHero}
             super={this.state.super1}
+            turn={this.state.turn}
+            statChooser={this.statChooser}
           />
           <Hero2
             prevSuperHero={this.prevSuperHero}
             nextSuperHero={this.nextSuperHero}
             super={this.state.super2}
+            turn={this.state.turn}
+            statChooser={this.statChooser}
           />
         </section>
       </div>

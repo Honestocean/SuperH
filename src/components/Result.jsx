@@ -7,8 +7,6 @@ export default class Result extends Component {
     playerWins: []
   };
 
-  storeFight = () => {};
-
   render() {
     return (
       <div>
@@ -33,30 +31,27 @@ export default class Result extends Component {
   }
 
   calculateWinner = () => {
-    const { powerstats1, powerstats2, name1, name2 } = this.props;
-    let total1 = Object.values(powerstats1);
-    let total2 = Object.values(powerstats2);
+    console.log(this.props)
+    const { powerstats1, powerstats2, name1, name2, chosenStat } = this.props;
 
-    total1 = total1.map(total => {
-      return Number(total);
-    });
-    total2 = total2.map(total => {
-      return Number(total);
-    });
+    let sum1 = powerstats1[chosenStat];
+    let sum2 = powerstats2[chosenStat];
 
-    let sum1 = total1.reduce(function(acc, cv) {
-      return acc + cv;
-    }, 0);
-    let sum2 = total2.reduce(function(acc, cv) {
-      return acc + cv;
-    }, 0);
+    console.log(sum1, 'sum1')
+    console.log(sum2, 'sum2')
 
-    if (sum1 > sum2) {
+    if (Number(sum1) > Number(sum2)) {
       this.setState((prevState, props) => ({
         msg: `${name1} is the champion!`,
         winners: [...prevState.winners, name1],
         playerWins: [...prevState.playerWins, "player1"]
       }));
+    } else if (sum1 === sum2) {
+      this.setState((prevState, props) => ({
+        msg: "It's a draw!",
+        winners: [...prevState.winners],
+        playerwins: [...prevState.playerWins]
+      }))
     } else {
       this.setState((prevState, props) => ({
         msg: `${name2} is the champion!`,

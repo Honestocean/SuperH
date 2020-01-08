@@ -1,21 +1,25 @@
 import React from "react";
+import Form from "./Form";
+import Charts from './Charts'
 
 export default function Hero1(props) {
+  const { turn, statChooser } = props;
+
+  const { powerstats } = props.super
+  const arr = Object.values(powerstats);
+  console.log("hero1", arr);
+  if (arr.filter(powerstat => {
+    return powerstat === "null"
+  }).length > 0) {
+    props.nextSuperHero(1);
+  }
+
   return (
     <div className="Hero">
       <h2>{props.super.name}</h2>
-      <img alt="A Bomb" src={props.super.image.url}></img>
+      <img alt="" src={props.super.image.url}></img>
       <h3>{props.super.work.occupation}</h3>
-      <form>
-        <select name="powerStats" id="power">
-          <option value="intelligence">Intelligence</option>
-          <option value="strength">Strength</option>
-          <option value="speed">Speed</option>
-          <option value="durability">Durability</option>
-          <option value="power">Power</option>
-          <option value="combat">Combat</option>
-        </select>
-      </form>
+      <Form turn={turn} statChooser={statChooser} />
       <button
         onClick={() => {
           props.prevSuperHero(1);
@@ -30,6 +34,7 @@ export default function Hero1(props) {
       >
         next
       </button>
+      <Charts powerstats={props.super.powerstats} />
     </div>
   );
 }
