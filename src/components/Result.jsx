@@ -1,22 +1,35 @@
-
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 export default class Result extends Component {
   state = {
-    msg: "Let's get ready to ruuuuuuuumble!!!"
-  }
+    msg: "Let's get ready to ruuuuuuuumble!!!",
+    winners: [],
+    playerWins: []
+  };
+
+  storeFight = () => {};
 
   render() {
     return (
       <div>
-        <button id="fightButton" onClick={() => {
-          this.calculateWinner();
-        }}>Fight!</button>
-        <h2>
-          {this.state.msg}
-        </h2>
+        <button
+          id="fightButton"
+          onClick={() => {
+            this.calculateWinner();
+          }}
+        >
+          Fight!
+        </button>
+        <button
+          onClick={() => {
+            this.props.refreshNewHero();
+          }}
+        >
+          ANOTHER ONE
+        </button>
+        <h2>{this.state.msg}</h2>
       </div>
-    )
+    );
   }
 
   calculateWinner = () => {
@@ -26,26 +39,30 @@ export default class Result extends Component {
 
     total1 = total1.map(total => {
       return Number(total);
-    })
+    });
     total2 = total2.map(total => {
       return Number(total);
-    })
+    });
 
-    let sum1 = total1.reduce(function (acc, cv) {
-      return acc + cv
-    }, 0)
-    let sum2 = total2.reduce(function (acc, cv) {
-      return acc + cv
-    }, 0)
+    let sum1 = total1.reduce(function(acc, cv) {
+      return acc + cv;
+    }, 0);
+    let sum2 = total2.reduce(function(acc, cv) {
+      return acc + cv;
+    }, 0);
 
     if (sum1 > sum2) {
-      this.setState({
-        msg: `${name1} is the champion!`
-      })
+      this.setState((prevState, props) => ({
+        msg: `${name1} is the champion!`,
+        winners: [...prevState.winners, name1],
+        playerWins: [...prevState.playerWins, "player1"]
+      }));
     } else {
-      this.setState({
-        msg: `${name2} is the champion!`
-      })
+      this.setState((prevState, props) => ({
+        msg: `${name2} is the champion!`,
+        winners: [...this.state.winners, name2],
+        playerWins: [...prevState.playerWins, "player2"]
+      }));
     }
-  }
+  };
 }

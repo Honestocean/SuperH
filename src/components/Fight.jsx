@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Hero1 from "./Hero1";
 import Hero2 from "./Hero2";
-import Result from "./Result"
+import Result from "./Result";
 
 export default class Fight extends Component {
   state = {
@@ -105,13 +105,15 @@ export default class Fight extends Component {
       .then(response => {
         this.setState({ ...this.state, super1: response });
       })
-      .then(fetch(`https://www.superheroapi.com/api.php/2536687333108055/${id2}`)
-        .then(response => {
-          return response.json();
-        })
-        .then(response => {
-          this.setState({ ...this.state, super2: response })
-        }));
+      .then(
+        fetch(`https://www.superheroapi.com/api.php/2536687333108055/${id2}`)
+          .then(response => {
+            return response.json();
+          })
+          .then(response => {
+            this.setState({ ...this.state, super2: response });
+          })
+      );
   }
 
   nextSuperHero = num => {
@@ -178,10 +180,34 @@ export default class Fight extends Component {
     }
   };
 
+  refreshNewHero = () => {
+    let id1 = Math.floor(Math.random() * 700);
+    let id2 = Math.floor(Math.random() * 700);
+    console.log(id1, id2);
+
+    fetch(`https://www.superheroapi.com/api.php/2536687333108055/${id1}`)
+      .then(response => {
+        return response.json();
+      })
+      .then(response => {
+        this.setState({ ...this.state, super1: response });
+      })
+      .then(
+        fetch(`https://www.superheroapi.com/api.php/2536687333108055/${id2}`)
+          .then(response => {
+            return response.json();
+          })
+          .then(response => {
+            this.setState({ ...this.state, super2: response });
+          })
+      );
+  };
+
   render() {
     return (
       <div>
         <Result
+          refreshNewHero={this.refreshNewHero}
           powerstats2={this.state.super2.powerstats}
           powerstats1={this.state.super1.powerstats}
           name1={this.state.super1.name}
